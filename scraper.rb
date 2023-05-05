@@ -63,7 +63,8 @@ query = <<SPARQL
 SPARQL
 
 url = WIKIDATA_SPARQL_URL % CGI.escape(query)
-data = Results.new(response: Scraped::Request.new(url: url).response).terms
+data = Results.new(response: Scraped::Request.new(url: url,
+                                                  headers: { 'User-Agent' => 'welsh-assembly-terms-wikidata morph scraper - curtis [at] loudspeek [dot] cc' }).response).terms
 puts data.map(&:compact).map(&:sort).map(&:to_h) if ENV['MORPH_DEBUG']
 
 ScraperWiki.sqliteexecute('DROP TABLE data') rescue nil
